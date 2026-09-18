@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "🔍 Running pre-commit code quality checks..."
+cd frontend
+npx lint-staged

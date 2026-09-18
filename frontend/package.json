@@ -1,0 +1,47 @@
+{
+  "name": "darukaa-earth-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint src",
+    "format": "prettier --write \"src/**/*.{js,jsx,css,html}\" \"*.js\" \"index.html\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css,html}\" \"*.js\" \"index.html\"",
+    "preview": "vite preview",
+    "prepare": "cd .. && git config core.hooksPath .husky || true"
+  },
+  "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.5.2",
+    "axios": "^1.20.0",
+    "chart.js": "^4.5.1",
+    "lucide-react": "^1.47.0",
+    "mapbox-gl": "^3.31.0",
+    "react": "^19.2.8",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
+    "oxlint": "^1.81.0",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^4.1.13",
+    "vite": "^8.3.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "prettier --write",
+      "oxlint"
+    ],
+    "src/**/*.{css,html}": [
+      "prettier --write"
+    ]
+  }
+}

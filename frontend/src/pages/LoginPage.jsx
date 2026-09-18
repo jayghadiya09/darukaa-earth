@@ -84,6 +84,26 @@ export const LoginPage = () => {
             <LogIn className="w-4 h-4" />
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
+
+          <button
+            type="button"
+            onClick={async () => {
+              setLoading(true);
+              setError(null);
+              try {
+                await login('admin@darukaa.earth', 'password123');
+                navigate('/');
+              } catch (err) {
+                setError(err.response?.data?.detail || 'Demo login failed');
+              } finally {
+                setLoading(false);
+              }
+            }}
+            disabled={loading}
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer border border-emerald-400/30"
+          >
+            <span>🚀 1-Click Instant Demo Login (Administrator)</span>
+          </button>
         </form>
 
         <div className="mt-6 pt-4 border-t border-slate-800 text-center text-xs text-slate-400">

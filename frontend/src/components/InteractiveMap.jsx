@@ -51,6 +51,7 @@ export const InteractiveMap = ({
   selectedSite = null,
   onSiteSelect = () => {},
   onPolygonDrawn = null,
+  onInitDraw = null,
 }) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -58,13 +59,15 @@ export const InteractiveMap = ({
   const popupRef = useRef(null);
   const onSiteSelectRef = useRef(onSiteSelect);
   const onPolygonDrawnRef = useRef(onPolygonDrawn);
+  const onInitDrawRef = useRef(onInitDraw);
   const sitesRef = useRef(sites);
 
   useEffect(() => {
     onSiteSelectRef.current = onSiteSelect;
     onPolygonDrawnRef.current = onPolygonDrawn;
+    onInitDrawRef.current = onInitDraw;
     sitesRef.current = sites;
-  }, [onSiteSelect, onPolygonDrawn, sites]);
+  }, [onSiteSelect, onPolygonDrawn, onInitDraw, sites]);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -201,8 +204,20 @@ export const InteractiveMap = ({
 
         map.on('draw.create', (e) => {
           const feature = e.features?.[0];
-          if (feature) onPolygonDrawnRef.current(feature);
+          if (feature) {
+            onPolygonDrawnRef.current(feature);
+            setTimeout(() => {
+              draw.deleteAll();
+            }, 100);
+          }
         });
+
+        if (onInitDrawRef.current) {
+          onInitDrawRef.current({
+            startDrawing: () => draw.changeMode('draw_polygon'),
+            deleteAll: () => draw.deleteAll(),
+          });
+        }
       }
     });
 

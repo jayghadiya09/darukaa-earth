@@ -16,10 +16,13 @@ export const Navbar = () => {
 
   const handleSeed = async () => {
     try {
+      localStorage.removeItem('darukaa_projects');
+      localStorage.removeItem('darukaa_sites');
       await apiClient.post('/seed/');
       window.location.reload();
     } catch (err) {
       console.error('Seed failed:', err);
+      window.location.reload();
     }
   };
 

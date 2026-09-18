@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, MapPin, Plus } from 'lucide-react';
+import { X, MapPin, Plus, Sparkles } from 'lucide-react';
 import apiClient from '../api/client';
+import { calculatePolygonAreaHectares } from '../api/mockData';
 
 export const AddSiteModal = ({ isOpen, onClose, drawnFeature, projects = [], onSiteCreated }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,9 @@ export const AddSiteModal = ({ isOpen, onClose, drawnFeature, projects = [], onS
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const coords = drawnFeature?.geometry?.coordinates || drawnFeature?.coordinates || [];
+  const computedAreaHa = calculatePolygonAreaHectares(coords);
 
   if (!isOpen || !drawnFeature) return null;
 
@@ -52,10 +56,20 @@ export const AddSiteModal = ({ isOpen, onClose, drawnFeature, projects = [], onS
           </div>
           <div>
             <h3 className="text-lg font-bold text-white">Save Drawn Polygon Site</h3>
-            <p className="text-xs text-emerald-400 font-medium">
-              ✨ Polygon geometry detected with automated area calculation
+            <p className="text-xs text-slate-400 font-medium">
+              Geospatial polygon captured via Mapbox Draw
             </p>
           </div>
+        </div>
+
+        <div className="mb-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-emerald-400">
+            <Sparkles className="w-4 h-4" />
+            <span className="font-medium">Calculated Area:</span>
+          </div>
+          <span className="text-white font-bold bg-emerald-500/20 px-2.5 py-1 rounded-md border border-emerald-500/40">
+            {computedAreaHa} Hectares
+          </span>
         </div>
 
         {error && (

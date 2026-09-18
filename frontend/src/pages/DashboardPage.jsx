@@ -13,10 +13,12 @@ export const DashboardPage = () => {
   const [siteAnalytics, setSiteAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Modals
+  // Modals & Map Draw
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [drawnFeature, setDrawnFeature] = useState(null);
+  const [isDrawingActive, setIsDrawingActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const mapControlsRef = React.useRef(null);
 
   const fetchSiteAnalytics = useCallback(async (siteId) => {
     try {
@@ -58,7 +60,15 @@ export const DashboardPage = () => {
   };
 
   const handlePolygonDrawn = (feature) => {
+    setIsDrawingActive(false);
     setDrawnFeature(feature);
+  };
+
+  const handleStartDrawing = () => {
+    setIsDrawingActive(true);
+    if (mapControlsRef.current?.startDrawing) {
+      mapControlsRef.current.startDrawing();
+    }
   };
 
   const handleSiteCreated = (newSite) => {
@@ -66,6 +76,7 @@ export const DashboardPage = () => {
     setSelectedSite(newSite);
     fetchSiteAnalytics(newSite.id);
     setDrawnFeature(null);
+    setIsDrawingActive(false);
   };
 
   const handleProjectCreated = (newProject) => {
@@ -143,20 +154,56 @@ export const DashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Interactive Map (2 Cols) */}
         <div className="lg:col-span-2 flex flex-col gap-4">
-          <div className="glass-panel p-4 flex items-center justify-between">
+          <div className="glass-panel p-4 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <Globe className="w-5 h-5 text-emerald-400" />
               <h2 className="text-base font-bold text-white">Interactive Geospatial Map</h2>
               {loading && <Loader2 className="w-4 h-4 animate-spin text-emerald-400 ml-1" />}
             </div>
-            <button
-              onClick={() => setIsProjectModalOpen(true)}
-              className="btn-primary text-xs py-1.5 px-3"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              New Project
-            </button>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleStartDrawing}
+                className={`text-xs py-1.5 px-3 rounded-lg font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
+                  isDrawingActive
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50 animate-pulse'
+                    : 'bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25 border border-emerald-500/30'
+                }`}
+                title="Click on the map to draw a new polygon site"
+              >
+                <span>✏️ Draw Site Polygon</span>
+              </button>
+
+              <button
+                onClick={() => setIsProjectModalOpen(true)}
+                className="btn-primary text-xs py-1.5 px-3"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                New Project
+              </button>
+            </div>
           </div>
+
+          {isDrawingActive && (
+            <div className="p-3 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs flex items-center justify-between shadow-lg">
+              <span className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                <strong>Draw Mode Active:</strong> Click points on the map to place polygon
+                vertices. Double-click to finish.
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsDrawingActive(false);
+                  mapControlsRef.current?.deleteAll?.();
+                }}
+                className="text-[11px] underline text-slate-300 hover:text-white ml-3 cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
 
           <div className="h-[460px]">
             <InteractiveMap
@@ -164,6 +211,9 @@ export const DashboardPage = () => {
               selectedSite={selectedSite}
               onSiteSelect={handleSiteSelect}
               onPolygonDrawn={handlePolygonDrawn}
+              onInitDraw={(ctrls) => {
+                mapControlsRef.current = ctrls;
+              }}
             />
           </div>
         </div>

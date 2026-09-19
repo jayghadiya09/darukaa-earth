@@ -13,22 +13,13 @@ const DEFAULT_ADMIN = {
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => {
-    if (localStorage.getItem('darukaa_logged_out') === 'true') {
-      return null;
-    }
     const saved = localStorage.getItem('darukaa_token');
     if (saved) return saved;
     localStorage.setItem('darukaa_token', 'darukaa_demo_jwt_token_admin_access');
     return 'darukaa_demo_jwt_token_admin_access';
   });
 
-  const [user, setUser] = useState(() => {
-    if (localStorage.getItem('darukaa_logged_out') === 'true') {
-      return null;
-    }
-    return DEFAULT_ADMIN;
-  });
-
+  const [user, setUser] = useState(DEFAULT_ADMIN);
   const [loading, setLoading] = useState(false);
 
   const logout = useCallback(() => {

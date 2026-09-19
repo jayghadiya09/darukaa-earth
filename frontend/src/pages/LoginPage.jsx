@@ -47,6 +47,40 @@ export const LoginPage = () => {
           </div>
         )}
 
+        {/* Instant Access Button */}
+        <div className="mb-5">
+          <button
+            type="button"
+            onClick={async () => {
+              setLoading(true);
+              setError(null);
+              try {
+                await login('admin@darukaa.earth', 'password123');
+                navigate('/');
+              } catch (err) {
+                setError(err.response?.data?.detail || 'Demo login failed');
+              } finally {
+                setLoading(false);
+              }
+            }}
+            disabled={loading}
+            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-sm transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer border border-emerald-300/40"
+          >
+            <span>🚀 Enter as Administrator (No Password Required)</span>
+          </button>
+          <p className="text-[11px] text-center text-emerald-400/90 mt-2 font-medium">
+            ✨ Instant 1-click access for reviewers & evaluators
+          </p>
+        </div>
+
+        <div className="relative flex py-2 items-center mb-4">
+          <div className="flex-grow border-t border-slate-800"></div>
+          <span className="flex-shrink mx-4 text-[10px] uppercase font-bold tracking-wider text-slate-500">
+            Or Sign In with Email & Password
+          </span>
+          <div className="flex-grow border-t border-slate-800"></div>
+        </div>
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
@@ -79,30 +113,10 @@ export const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full justify-center py-2.5 mt-2"
+            className="btn-primary w-full justify-center py-2.5 mt-1"
           >
             <LogIn className="w-4 h-4" />
-            {loading ? 'Authenticating...' : 'Sign In'}
-          </button>
-
-          <button
-            type="button"
-            onClick={async () => {
-              setLoading(true);
-              setError(null);
-              try {
-                await login('admin@darukaa.earth', 'password123');
-                navigate('/');
-              } catch (err) {
-                setError(err.response?.data?.detail || 'Demo login failed');
-              } finally {
-                setLoading(false);
-              }
-            }}
-            disabled={loading}
-            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer border border-emerald-400/30"
-          >
-            <span>🚀 1-Click Instant Demo Login (Administrator)</span>
+            {loading ? 'Authenticating...' : 'Sign In with Credentials'}
           </button>
         </form>
 

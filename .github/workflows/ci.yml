@@ -28,6 +28,7 @@ jobs:
         env:
           DATABASE_URL: sqlite:///./ci_test.db
           SECRET_KEY: ci-secret-key
+          PYTHONPATH: .
         run: pytest -q
 
   frontend:

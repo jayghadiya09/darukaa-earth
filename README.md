@@ -1,11 +1,14 @@
 # Darukaa.Earth — Full-Stack Geospatial Data Analytics Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen.svg)](https://jayghadiya09.github.io/darukaa-earth/)
 [![CI Pipeline](https://github.com/jayghadiya09/darukaa-earth/actions/workflows/ci.yml/badge.svg)](https://github.com/jayghadiya09/darukaa-earth/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20%7C%20Mapbox%20%7C%20Chart.js-cyan.svg)](frontend/)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI%20%7C%20PostGIS%20%7C%20SQLAlchemy-emerald.svg)](backend/)
 
 > **Darukaa.Earth** is an enterprise-grade geospatial analytics dashboard designed to monitor, analyze, and visualize ecological restoration, carbon offset projects, and biodiversity conservation zones in real time.
+>
+> 🌐 **Live Demo URL**: [https://jayghadiya09.github.io/darukaa-earth/](https://jayghadiya09.github.io/darukaa-earth/)
 
 ---
 
